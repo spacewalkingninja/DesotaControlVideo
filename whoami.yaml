@@ -1,0 +1,496 @@
+## DeSOTA Services Params
+services_params: {
+  spacewalkingninja/DesotaControlVideo/text-and-pose: {
+      win: {
+          version: 0.0.0,
+          commit: -CHANGE-ME-,
+          project_dir: Desota\Desota_Models\DesotaControlVideo,
+          execs_path: executables\Windows,
+          setup: desotacontrolvideo.setup.bat,
+          setup_args: [/manualstart, /debug],
+          uninstaller: desotacontrolvideo.uninstall.bat,
+          uninstaller_args: [/Q],
+          starter: ,
+          stoper: ,
+          status: ,
+
+          desota_runner: runner.py,
+          python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+          cli_cmd: [
+              Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+              Desota\Desota_Models\DesotaControlVideo\main.py
+          ]
+      },
+      lin: {
+          version: ,
+          commit: ,
+          project_dir: Desota/Desota_Models/DesotaControlVideo,
+          execs_path: executables/Linux,
+          setup: ,
+          setup_args: ,
+          uninstaller: ,
+          uninstaller_args: ,
+          starter: ,
+          stoper: ,
+          status: ,
+
+          desota_runner: ,
+          python_path: ,
+          cli_cmd: 
+      },
+      mac: {
+          version: ,
+          commit: ,
+          project_dir: Desota/Desota_Models/DesotaControlVideo,
+          execs_path: executables/MacOS,
+          setup: ,
+          setup_args: ,
+          uninstaller: ,
+          uninstaller_args: ,
+          starter: ,
+          stoper: ,
+          status: ,
+
+          desota_runner: ,
+          python_path: ,
+          cli_cmd: 
+      },
+      service_type: model,
+      timeout: 600,
+      required: false,
+      source_code: https://github.com/spacewalkingninja/DesotaControlVideo,
+      report_issue: https://github.com/spacewalkingninja/DesotaControlVideo/issues,
+      description: https://github.com/spacewalkingninja/DesotaControlVideo/tree/main#readme,
+      short_description: Edit videos with StableDiffusion + Controlnet,
+      model_cli: cli_cmd,
+      run_constantly: false,
+      submodel: false,
+      child_models: [
+            spacewalkingninja/DesotaControlVideo/text-and-softedge,
+            spacewalkingninja/DesotaControlVideo/text-and-canny,
+            spacewalkingninja/DesotaControlVideo/text-and-geometry,
+            spacewalkingninja/DesotaControlVideo/text-and-depth,
+            spacewalkingninja/DesotaControlVideo/text-and-shuffle,
+            spacewalkingninja/DesotaControlVideo/text-and-lineart
+            spacewalkingninja/DesotaControlVideo/extract-canny,
+            spacewalkingninja/DesotaControlVideo/extract-pose,
+            spacewalkingninja/DesotaControlVideo/extract-scribble,
+            spacewalkingninja/DesotaControlVideo/extract-softedge,
+            spacewalkingninja/DesotaControlVideo/extract-depth,
+            spacewalkingninja/DesotaControlVideo/extract-face-geometry,
+            spacewalkingninja/DesotaControlVideo/extract-normals,
+            spacewalkingninja/DesotaControlVideo/extract-geometry,
+            spacewalkingninja/DesotaControlVideo/extract-lineart,
+            spacewalkingninja/DesotaControlVideo/extract-anime,
+            
+        ]
+  },
+  spacewalkingninja/DesotaControlVideo/text-and-softedge: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_softedge.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_softedge.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-and-canny: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_canny.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_canny.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-and-geometry: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_geometry.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_geometry.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-and-depth: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_depth.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_depth.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-and-shuffle: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_shuffle.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_shuffle.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-and-lineart: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_lineart.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_lineart.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/text-to-anime-style: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_inference_lineart_anime.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_inference_lineart_anime.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-canny: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_canny.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_canny.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-pose: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_pose.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_pose.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-scribble: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_scribble.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_scribble.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-softedge: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_softedge.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_softedge.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-depth: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_depth.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_depth.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-face-geometry: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_face.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_face.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-normals: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_normals.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_normals.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-geometry: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_geometry.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_geometry.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-lineart: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_lineart.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_lineart.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+  spacewalkingninja/DesotaControlVideo/extract-anime: {
+        win: {
+            project_dir: Desota\Desota_Models\DesotaControlVideo,
+            desota_runner: runner_extract_lineart_anime.py,
+            python_path: Desota\Desota_Models\DesotaControlVideo\env\python.exe,
+            
+            runner: Desota\Desota_Models\DesotaControlVideo\runner_extract_lineart_anime.py,
+            runner_py: Desota\Desota_Models\DesotaControlVideo\env\python.exe
+        },
+        lin: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        mac: {
+            project_dir: ,
+            desota_runner: ,
+            python_path:
+        },
+        service_type: model,
+        timeout: 600,
+        submodel: true,
+        parent_model: spacewalkingninja/DesotaControlVideo/text-and-pose
+    },
+}
