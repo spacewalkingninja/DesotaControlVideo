@@ -28,7 +28,7 @@ for %%a in ("%~dp0\..\..\..\..\..\..") do set "test_path=%%~fa"
 for %%a in ("%UserProfile%\..") do set "test1_path=%%~fa"
 
 :: Model VARS
-set model_name=DeUrlCruncher
+set model_name=DesotaControlVideo
 set model_path_basepath=Desota\Desota_Models\%model_name%
 set uninstaller_header=%model_name% Uninstaller - Sad to say goodbye ):
 set model_execs_basepath=%model_path_basepath%\executables\Windows
