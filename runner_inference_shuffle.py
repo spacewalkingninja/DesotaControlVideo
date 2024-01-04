@@ -1,6 +1,6 @@
 import os, sys
 import time, re, json, shutil
-import requests, subprocess
+import requests, subprocess, random
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-mr", "--model_req", 
@@ -11,7 +11,7 @@ parser.add_argument("-mru", "--model_res_url",
                     type=str)
 
 DEBUG = False
-
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 # DeSOTA Funcs [START]
 #   > Import DeSOTA Scripts
 from desota import detools
@@ -62,7 +62,7 @@ def main(args):
     send_task_url = args.model_res_url
     
     # TARGET File Path
-    out_filename = f"pose-control{start_time}.mp4"
+    out_filename = f"shuffled-video-{start_time}.mp4"
     out_filepath = os.path.join(TMP_PATH, out_filename)
     
     out_urls = detools.get_url_from_str(send_task_url)
@@ -88,6 +88,7 @@ def main(args):
     # TODO Get VIDEO from request TODO
     ##TODO##
     _req_video = detools.get_request_video(model_request_dict) ##TODO##
+    #print(model_request_dict)
     if isinstance(_req_video, list):
         _req_video = str(_req_video[0])
     #REMOVE OLD INPUTS
@@ -105,9 +106,9 @@ def main(args):
     #in_filepath = os.path.join(IN_PATH, in_filename)
 
     ##TODO##
-    with requests.get(_req_video, stream=True) as r:
-            with open(in_filepath, 'wb') as f:
-                shutil.copyfileobj(r.raw, f)
+    #with requests.get(_req_video, stream=True) as r:
+    #        with open(in_filepath, 'wb') as f:
+    #            shutil.copyfileobj(r.raw, f)
     
 
     # Run Model
@@ -119,35 +120,37 @@ def main(args):
             _model_runner_py = os.path.join(APP_PATH, "env", "bin", "python3")
 
 
-        targs = model_request_dict.task_args
-
+        targs = {}
         if 'prompt' in targs:
             if targs['prompt'] == '-=#{([$argument$])}#=-':
                 targs['prompt'] = _req_text
+        else:
+            targs['prompt'] = _req_text
+
         if 'condition' not in targs:
             targs['condition'] = "shuffle"
         else:
-            if targs.condition == "pose":
+            if targs['condition'] == "pose":
                 targs['condition'] = "openpose"
-            if targs.condition == "scribble":
+            if targs['condition'] == "scribble":
                 targs['condition'] = "scribble_hedsafe"
-            if targs.condition == "softedge":
+            if targs['condition'] == "softedge":
                 targs['condition'] = "softedge_hedsafe"
-            if targs.condition == "face-geometry":
+            if targs['condition'] == "face-geometry":
                 targs['condition'] = "mediapipe_face"
-            if targs.condition == "normals":
+            if targs['condition'] == "normals":
                 targs['condition'] = "normal_bae"
-            if targs.condition == "geometry":
+            if targs['condition'] == "geometry":
                 targs['condition'] = "mlsd"
-            if targs.condition == "lineart":
+            if targs['condition'] == "lineart":
                 targs['condition'] = "lineart_realistic"
-            if targs.condition == "anime":
+            if targs['condition'] == "anime":
                 targs['condition'] = "lineart_anime"
-            if targs.condition == "canny":
+            if targs['condition'] == "canny":
                 targs['condition'] = "canny"
-            if targs.condition == "shuffle":
+            if targs['condition'] == "shuffle":
                 targs['condition'] = "shuffle"
-            if targs.condition == "depth":
+            if targs['condition'] == "depth":
                 targs['condition'] = "depth_midas"
 
         if 'width' not in targs:
@@ -164,23 +167,24 @@ def main(args):
             targs['seed'] = str(random.randint(1, 1000000))
 
         targs['version'] = "v11"
-
+        print(targs)
         le_cmd = [
             _model_runner_py, _model_run, 
-            "--query", str(targs['prompt']), 
+            "--prompt", f'"{targs["prompt"]}"', 
             "--resnum", str(_resnum),
-            "--respath", out_filename,
+            "--respath", str(out_filename),
             "--video_path", str(_req_video),
-            "--condition", str(targs.condition),
-            "--video_length", str(targs.video_length),
-            "--width", str(targs.width),
-            "--height", str(targs.height),
-            "--frame_rate", str(targs.frame_rate),
-            "--version",  str(targs.version),  # You may need to adjust this
-            "--seed", str(targs.seed) ,
+            "--condition", str(targs["condition"]),
+            "--video_length", str(targs["video_length"]),
+            "--width", str(targs['width']),
+            "--height", str(targs['height']),
+            "--frame_rate", str(targs["frame_rate"]),
+            "--version",  str(targs["version"]),  # You may need to adjust this
+            "--seed", str(targs["seed"]) ,
             #"--is_long_video" if targs.is_long_video else "",
-            #"--extract_only" = str(0);
         ]
+
+        print(" ".join(le_cmd))
         _sproc = subprocess.Popen(
             le_cmd
         )
@@ -190,11 +194,11 @@ def main(args):
             if _ret_code != None:
                 break
     else:
-        print(f"[ ERROR ] -> DeUrlCruncher Request Failed: No Input found")
+        print(f"[ ERROR ] -> Desotacontrolvideo Request Failed: No Input found")
         exit(1)
 
     if not os.path.isfile(out_filepath):
-        print(f"[ ERROR ] -> DeUrlCruncher Request Failed: No Output found")
+        print(f"[ ERROR ] -> Desotacontrolvideo Request Failed: No Output found")
         exit(2)
     
     if dev_mode:
@@ -219,7 +223,7 @@ def main(args):
             with open(os.path.join(APP_PATH, "debug.txt"), "a") as fw:
                 fw.write(f"RESULT: {json.dumps(deurlcruncher_res)}")
 
-        print(f"[ INFO ] -> DeUrlCruncher Response:{json.dumps(deurlcruncher_res, indent=2)}")
+        print(f"[ INFO ] -> Desotacontrolvideo Response:{json.dumps(deurlcruncher_res, indent=2)}")
 
         # DeSOTA API Response Preparation
         files = []
@@ -232,7 +236,7 @@ def main(args):
         os.remove(out_filepath)
 
         if send_task.status_code != 200:
-            print(f"[ ERROR ] -> DeUrlCruncher Post Failed (Info):\nfiles: {files}\nResponse Code: {send_task.status_code}")
+            print(f"[ ERROR ] -> Desotacontrolvideo Post Failed (Info):\nfiles: {files}\nResponse Code: {send_task.status_code}")
             exit(3)
     
     print("TASK OK!")

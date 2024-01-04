@@ -11,7 +11,7 @@ parser.add_argument("-mru", "--model_res_url",
                     type=str)
 
 DEBUG = False
-
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 # DeSOTA Funcs [START]
 #   > Import DeSOTA Scripts
 from desota import detools

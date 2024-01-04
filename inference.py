@@ -19,35 +19,38 @@ from models.RIFE.IFNet_HDv3 import IFNet
 
 
 device = "cuda"
-sd_path = "checkpoints/stable-diffusion-v1-5"
-inter_path = "checkpoints/flownet.pkl"
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+checkpoints_path = os.path.join(CURRENT_PATH, "checkpoints")
+sd_path = os.path.join(checkpoints_path, "stable-diffusion-v1-5")
+#sd_path = os.path.join(checkpoints_path,  "stable-diffusion-v1-5"
+inter_path = os.path.join(checkpoints_path,  "flownet.pkl")
 controlnet_dict_version = {
     "v10":{
-        "openpose": "checkpoints/sd-controlnet-openpose",
-        "depth_midas": "checkpoints/sd-controlnet-depth",
-        "canny": "checkpoints/sd-controlnet-canny",
+        "openpose": os.path.join(checkpoints_path,  "sd-controlnet-openpose"),
+        "depth_midas": os.path.join(checkpoints_path,  "sd-controlnet-depth"),
+        "canny": os.path.join(checkpoints_path,  "sd-controlnet-canny"),
     },
     "v11": {
-    "softedge_pidinet": "checkpoints/control_v11p_sd15_softedge",
-    "softedge_pidsafe": "checkpoints/control_v11p_sd15_softedge",
-    "softedge_hed": "checkpoints/control_v11p_sd15_softedge",
-    "softedge_hedsafe": "checkpoints/control_v11p_sd15_softedge",
-    "scribble_hed": "checkpoints/control_v11p_sd15_scribble",
-    "scribble_pidinet": "checkpoints/control_v11p_sd15_scribble",
-    "lineart_anime": "checkpoints/control_v11p_sd15_lineart_anime",
-    "lineart_coarse": "checkpoints/control_v11p_sd15_lineart",
-    "lineart_realistic": "checkpoints/control_v11p_sd15_lineart",
-    "depth_midas": "checkpoints/control_v11f1p_sd15_depth",
-    "depth_leres": "checkpoints/control_v11f1p_sd15_depth",
-    "depth_leres++": "checkpoints/control_v11f1p_sd15_depth",
-    "depth_zoe": "checkpoints/control_v11f1p_sd15_depth",
-    "canny": "checkpoints/control_v11p_sd15_canny",
-    "openpose": "checkpoints/control_v11p_sd15_openpose",
-    "openpose_face": "checkpoints/control_v11p_sd15_openpose",
-    "openpose_faceonly": "checkpoints/control_v11p_sd15_openpose",
-    "openpose_full": "checkpoints/control_v11p_sd15_openpose",
-    "openpose_hand": "checkpoints/control_v11p_sd15_openpose",
-    "normal_bae": "checkpoints/control_v11p_sd15_normalbae"
+    "softedge_pidinet": os.path.join(checkpoints_path,  "control_v11p_sd15_softedge"),
+    "softedge_pidsafe": os.path.join(checkpoints_path,  "control_v11p_sd15_softedge"),
+    "softedge_hed": os.path.join(checkpoints_path,  "control_v11p_sd15_softedge"),
+    "softedge_hedsafe": os.path.join(checkpoints_path,  "control_v11p_sd15_softedge"),
+    "scribble_hed": os.path.join(checkpoints_path,  "control_v11p_sd15_scribble"),
+    "scribble_pidinet": os.path.join(checkpoints_path,  "control_v11p_sd15_scribble"),
+    "lineart_anime": os.path.join(checkpoints_path,  "control_v11p_sd15_lineart_anime"),
+    "lineart_coarse": os.path.join(checkpoints_path,  "control_v11p_sd15_lineart"),
+    "lineart_realistic": os.path.join(checkpoints_path,  "control_v11p_sd15_lineart"),
+    "depth_midas": os.path.join(checkpoints_path,  "control_v11f1p_sd15_depth"),
+    "depth_leres": os.path.join(checkpoints_path,  "control_v11f1p_sd15_depth"),
+    "depth_leres++": os.path.join(checkpoints_path,  "control_v11f1p_sd15_depth"),
+    "depth_zoe": os.path.join(checkpoints_path,  "control_v11f1p_sd15_depth"),
+    "canny": os.path.join(checkpoints_path,  "control_v11p_sd15_canny"),
+    "openpose": os.path.join(checkpoints_path,  "control_v11p_sd15_openpose"),
+    "openpose_face": os.path.join(checkpoints_path,  "control_v11p_sd15_openpose"),
+    "openpose_faceonly": os.path.join(checkpoints_path,  "control_v11p_sd15_openpose"),
+    "openpose_full": os.path.join(checkpoints_path,  "control_v11p_sd15_openpose"),
+    "openpose_hand": os.path.join(checkpoints_path,  "control_v11p_sd15_openpose"),
+    "normal_bae": os.path.join(checkpoints_path,  "control_v11p_sd15_normalbae")
     }
 }
 # load processor from processor_id
@@ -132,7 +135,7 @@ if __name__ == "__main__":
     if args.extract_only:
         # Save condition video
         video_cond = [np.array(p).astype(np.uint8) for p in pil_annotation]
-        imageio.mimsave(os.path.join(args.output_path, f"{args.temp_video_name}.mp4"), video_cond, fps=8)
+        imageio.mimsave(os.path.join(args.output_path, f"{args.temp_video_name}"), video_cond, fps=8)
         # Reduce memory (optional)
         del processor; torch.cuda.empty_cache()
 
@@ -161,4 +164,4 @@ if __name__ == "__main__":
                         width=args.width, height=args.height
                     ).videos
         args.temp_video_name = args.prompt if args.temp_video_name is None else args.temp_video_name
-        save_videos_grid(sample, f"tmp/{args.temp_video_name}.mp4")
+        save_videos_grid(sample, f"tmp/{args.temp_video_name}")

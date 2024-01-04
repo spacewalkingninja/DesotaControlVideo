@@ -18,6 +18,9 @@ INF_PATH = os.path.join(CURRENT_PATH, f"inference.py")
 
 preseed = int(random.randint(1, 1000000))  # Generate a random seed
 
+#parser = argparse.ArgumentParser()
+
+DEFAULT_OUT_PATH = os.path.join(f"v-edit.mp4")
 # Create an argument parser
 parser = argparse.ArgumentParser(description="AI Video With Text Control Synthesis CLI")
 parser.add_argument("-p", "--prompt", default="enter_cli_mode", help="Text description of target video", type=str)
@@ -30,21 +33,16 @@ parser.add_argument("-vh", "--height", help="Output Video Height defaults to 256
 #parser.add_argument("-ss", "--smoother_steps", help="Timesteps for using interleaved-frame smoother", default="19 20", type=str)
 parser.add_argument("-lv", "--is_long_video", help="Set 1 to produce a long video OR use to lower RAM usage; Set 0 to disable; LongVid is On by default!", default=1, action="store_true")
 parser.add_argument("-eo", "--extract_only", help="Set 1 to extract only the condition(eg. pose); Set 0 to proceed to inference; Default 0!", default=0, action="store_true")
-parser.add_argument("-vc", "--version_controlnet", help="Controlnet version can be v10 or v11, def10", default="v10", action="store_true")
+parser.add_argument("-vc", "--version", default="v10", help="Controlnet version can be v10 or v11, def10", type=str)
 parser.add_argument("-ni", "--num_inference_steps", help="Number of denoising steps", default=50, type=int)
 parser.add_argument("-gs", "--guidance_scale", help="Scale for classifier-free guidance", default=12.5, type=float)
 parser.add_argument("-s", "--seed", help="Random seed for generation (leave blank to randomize)", default=preseed, type=int)
-
-args = parser.parse_args()
-
+parser.add_argument("-resnum", "--resnum", help="whatever", default="1", type=int)
 
 
 
-#parser = argparse.ArgumentParser()
-if not args.extract_only:
-    DEFAULT_OUT_PATH = os.path.join(f"{args.condition}-edit.mp4")
-else:
-    DEFAULT_OUT_PATH = os.path.join(f"{args.condition}-only-video.mp4")
+
+
 parser.add_argument("-rp", "--respath", 
                     help=f'Output mp4 filename, do not change... default `./condition-(edit|only-video).mp4`',
                     default=str(DEFAULT_OUT_PATH),
@@ -61,7 +59,7 @@ if args.is_long_video != 1:
     args.is_long_video = False
 
 
-args.query = args.prompt
+args.prompt = args.prompt
 
 DEBUG = True
     
@@ -143,14 +141,14 @@ def VideoThread(query, args=args):
         "--condition", str(args.condition),
         "--video_path", str(video_path),
         "--output_path", str(TMP_PATH),  # You may need to adjust this
-        "--temp_video_name", str(DEFAULT_OUT_PATH),  # You may need to adjust this
+        "--temp_video_name", str(args.respath),  # You may need to adjust this
         "--video_length", str(args.video_length),
 #            "--smoother_steps", str(f'"{args.smoother_steps}"'),
         "--width", str(args.width),
         "--height", str(args.height),
         "--frame_rate", str(args.frame_rate),
-        "--version",  str(args.version_controlnet),  # You may need to adjust this
-        "--seed", str(args.seed) if args.seed.isdigit() else str(random.randint(1, 1000000)),
+        "--version",  str(args.version),  # You may need to adjust this
+        "--seed", str(args.seed) if str(args.seed).isdigit() else str(random.randint(1, 1000000)),
     ]
 
     if args.is_long_video:
@@ -191,7 +189,7 @@ def main(args):
             # and ask you sure you wanna go with these settings? Y/N
 
             args.prompt = _user_query
-            args.query = _user_query
+            args.prompt = _user_query
 
 
 
@@ -207,7 +205,7 @@ def main(args):
             print(f'{pcol("", "title", nostart=True)}{pcol("-------------------------------------------", "search")}')
             args.video_path = _user_query if _user_query else DEF_MOON
 
-            # Get User Input for -vc/--version_controlnet Argument
+            # Get User Input for -vc/--version Argument
             try:
                 _user_query = input("Enter the Controlnet version (choices: v10 or v11, default is v10): ")
             except KeyboardInterrupt:
@@ -217,7 +215,7 @@ def main(args):
                 print(pcol("", "title", nostart=True))
                 return
             print(f'{pcol("", "title", nostart=True)}{pcol("-------------------------------------------", "search")}')
-            args.version_controlnet = _user_query.lower() if _user_query else "v10"
+            args.version = _user_query.lower() if _user_query else "v10"
 
             # Get User Input for -c/--condition Argument
             try:
@@ -370,7 +368,7 @@ def main(args):
             print(f'{pcol("", "title", nostart=True)}{pcol("-------------------------------------------", "search")}')
             print(f"Prompt: {args.prompt}")
             print(f"Video Path: {args.video_path}")
-            print(f"Version Controlnet: {args.version_controlnet}")
+            print(f"Version Controlnet: {args.version}")
             print(f"Condition: {args.condition}")
             print(f"Condition Only? {args.extract_only}")
             print(f"Output Video Length: {args.video_length}")
@@ -396,7 +394,7 @@ def main(args):
             print(f'{pcol("", "title", nostart=True)}{pcol("-------------------------------------------", "search")}')
             print(f"Prompt: {args.prompt}")
             print(f"Video Path: {args.video_path}")
-            print(f"Version Controlnet: {args.version_controlnet}")
+            print(f"Version Controlnet: {args.version}")
             print(f"Condition: {args.condition}")
             print(f"Condition Only? {args.extract_only}")
             print(f"Output Video Length: {args.video_length}")
@@ -412,7 +410,7 @@ def main(args):
             _start_time = time.time() if DEBUG else 0
             _url_res = False
             _resnum = 0
-            tsearch = VideoThread(args.query, args)
+            tsearch = VideoThread(args.prompt, args)
             #tsearch.start()
             #tsearch.join(timeout=15)
             #_url_res = tsearch.res
@@ -437,7 +435,7 @@ def main(args):
     else:
         _url_res = False
         _resnum = 0
-        tsearch = VideoThread(args.query, args)
+        tsearch = VideoThread(args.prompt, args)
         #tsearch.start()
         #tsearch.join(timeout=15)
         #_url_res = tsearch.res
