@@ -169,8 +169,7 @@ def main(args):
             _model_runner_py, _model_run, 
             "--query", str(targs['prompt']), 
             "--resnum", str(_resnum),
-            "--respath", out_filename
-            "--query", str(targs['prompt']),
+            "--respath", out_filename,
             "--video_path", str(_req_video),
             "--condition", str(targs.condition),
             "--video_length", str(targs.video_length),

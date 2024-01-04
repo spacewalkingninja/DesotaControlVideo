@@ -169,8 +169,7 @@ def main(args):
             _model_runner_py, _model_run, 
             "--query", str(targs['prompt']), 
             "--resnum", str(_resnum),
-            "--respath", out_filename
-            "--query", str(targs['prompt']),
+            "--respath", out_filename,
             "--video_path", str(_req_video),
             "--condition", str(targs.condition),
             "--video_length", str(targs.video_length),
@@ -180,7 +179,7 @@ def main(args):
             "--version",  str(targs.version),  # You may need to adjust this
             "--seed", str(targs.seed) ,
             #"--is_long_video" if targs.is_long_video else "",
-            #"--extract_only" = str(1);
+            #"--extract_only" = str(0);
         ]
         _sproc = subprocess.Popen(
             le_cmd
