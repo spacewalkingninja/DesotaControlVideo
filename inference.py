@@ -19,6 +19,13 @@ from models.RIFE.IFNet_HDv3 import IFNet
 
 
 device = "cuda"
+
+
+torch.cuda.set_per_process_memory_fraction(1.0, 0) #n ]e estritamente necessario pq ele automaticamente aloca o maximo usavel mas why not ne 
+torch.cuda.empty_cache()
+total_memory = torch.cuda.get_device_properties(0).total_memory
+print(f"[TORCH]{total_memory} allocated to gpu")
+
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 checkpoints_path = os.path.join(CURRENT_PATH, "checkpoints")
 sd_path = os.path.join(checkpoints_path, "stable-diffusion-v1-5")
@@ -122,7 +129,7 @@ if __name__ == "__main__":
 
     # Save source video
     original_pixels = rearrange(video, "(b f) c h w -> b c f h w", b=1)
-    save_videos_grid(original_pixels, os.path.join(args.output_path, "source_video.mp4"), rescale=True)
+    save_videos_grid(original_pixels, os.path.join(CURRENT_PATH, args.output_path, "source_video.mp4"), rescale=True)
 
 
     # Step 2. Parse a video to conditional frames
@@ -135,7 +142,7 @@ if __name__ == "__main__":
     if args.extract_only:
         # Save condition video
         video_cond = [np.array(p).astype(np.uint8) for p in pil_annotation]
-        imageio.mimsave(os.path.join(args.output_path, f"{args.temp_video_name}"), video_cond, fps=8)
+        imageio.mimsave(os.path.join(CURRENT_PATH, args.output_path, f"{args.temp_video_name}"), video_cond, fps=8)
         # Reduce memory (optional)
         del processor; torch.cuda.empty_cache()
 
@@ -143,7 +150,7 @@ if __name__ == "__main__":
 
         # Save condition video
         video_cond = [np.array(p).astype(np.uint8) for p in pil_annotation]
-        imageio.mimsave(os.path.join(args.output_path, f"{args.condition}_condition.mp4"), video_cond, fps=8)
+        imageio.mimsave(os.path.join(CURRENT_PATH, args.output_path, f"{args.condition}_condition.mp4"), video_cond, fps=8)
 
         # Reduce memory (optional)
         del processor; torch.cuda.empty_cache()
@@ -164,4 +171,4 @@ if __name__ == "__main__":
                         width=args.width, height=args.height
                     ).videos
         args.temp_video_name = args.prompt if args.temp_video_name is None else args.temp_video_name
-        save_videos_grid(sample, f"tmp/{args.temp_video_name}")
+        save_videos_grid(sample, os.path.join(CURRENT_PATH, args.output_path, args.temp_video_name))

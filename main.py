@@ -151,8 +151,8 @@ def VideoThread(query, args=args):
         "--seed", str(args.seed) if str(args.seed).isdigit() else str(random.randint(1, 1000000)),
     ]
 
-    if args.is_long_video:
-        command.append("--is_long_video")
+    #if args.is_long_video:
+    command.append("--is_long_video")
 
     if args.extract_only:
         command.append("--extract_only")
