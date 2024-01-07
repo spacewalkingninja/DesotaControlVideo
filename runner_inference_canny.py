@@ -223,7 +223,7 @@ def main(args):
             with open(os.path.join(APP_PATH, "debug.txt"), "a") as fw:
                 fw.write(f"RESULT: {json.dumps(deurlcruncher_res)}")
 
-        print(f"[ INFO ] -> Desotacontrolvideo Response:{json.dumps(deurlcruncher_res, indent=2)}")
+        print(f"[ INFO ] -> DesotaControlVideo Made it!")
 
         # DeSOTA API Response Preparation
         files = []
