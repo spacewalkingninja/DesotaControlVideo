@@ -10,6 +10,16 @@ parser.add_argument("-mru", "--model_res_url",
                     help="DeSOTA API Result URL. Recognize path instead of url for desota tests", # check how is atribuited the dev_mode variable in main function
                     type=str)
 
+from requests.adapters import HTTPAdapter, Retry
+
+s = requests.Session()
+
+retries = Retry(total=5,
+                backoff_factor=0.1,
+                status_forcelist=[ 500, 502, 503, 504 ])
+
+s.mount('https://', HTTPAdapter(max_retries=retries))
+
 DEBUG = False
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 # DeSOTA Funcs [START]
@@ -215,12 +225,7 @@ def main(args):
         detools.user_chown(report_path)
         detools.user_chown(out_filepath)
         print(f"Path to report:\n\t{report_path}")
-    else:
-        with open(out_filepath, "r") as fr:
-            deurlcruncher_res = json.loads(fr.read())
-        if DEBUG:
-            with open(os.path.join(APP_PATH, "debug.txt"), "a") as fw:
-                fw.write(f"RESULT: {json.dumps(deurlcruncher_res)}")
+    
 
         print(f"[ INFO ] -> DesotaControlVideo Made it!")
 
@@ -229,7 +234,7 @@ def main(args):
         with open(out_filepath, 'rb') as fr:
             files.append(('upload[]', fr))
             # DeSOTA API Response Post
-            send_task = requests.post(url = send_task_url, files=files)
+            send_task = s.post(url = send_task_url, files=files)
             print(f"[ INFO ] -> DeSOTA API Upload:{json.dumps(send_task.json(), indent=2)}")
         # Delete temporary file
         os.remove(out_filepath)
